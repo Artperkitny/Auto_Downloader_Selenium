@@ -1,53 +1,24 @@
+import os
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-
-driver = webdriver.Chrome()
-# driver.get("http://www.google.com")
-
-# element = driver.find_element_by_id("lst-ib")
-# element.send_keys("selenium", Keys.ENTER)
-
-# time.sleep(5)
-
-# assert "Python" not in driver.title
-# elem = driver.find_element_by_name("q")
-# elem.send_keys("pycon")
-# elem.send_keys(Keys.RETURN)
-# assert "No results found." not in driver.page_source
-
-#STAGING: https://genesis.rentlytics.com/trilogy/marketing-cost-analysis/visualization
-#PROD: https://secure.rentlytics.com/trilogy/marketing-cost-analysis/visualization
-
-#User Info
-email = "art@rentlytics.com"
-password = "pass4art"
-
-def login():
-	Email = driver.find_element_by_name("email")
-	Password = driver.find_element_by_name("password")
-	Email.send_keys(email)
-	Password.send_keys(password, Keys.ENTER)
-
-# driver.get("https://genesis.rentlytics.com/trilogy/marketing-cost-analysis/visualization")
-# time.sleep(5)
-# login()
-# time.sleep(20)
-# element1 = driver.find_elements_by_xpath("//*[@id='number_span']")
+from selenium.webdriver.support import expected_conditions
 
 
-driver.get("https://secure.rentlytics.com/trilogy/marketing-cost-analysis/visualization")
-login()
-wait = WebDriverWait(driver, 5000)
-element2 = wait.until(EC.element_to_be_clickable((By.CLASS,"dashboard-layout-subcell-host ng-scope")))
-print len(element2)
-for element in element2:
-	print "----element----\n"
-	print element.text 
+test_data = ("https://www.youtube.com/watch?v=QMokMQ8Bu7Y",
+			"https://www.youtube.com/watch?v=e0Og94zSuYM",
+			"https://www.youtube.com/watch?v=OVMuwa-HRCQ",
+			"https://www.youtube.com/watch?v=pfvfd5YxuxA",
+			"https://www.youtube.com/watch?v=5PvZFmE-xtU",)
 
-#assertEqual(element1,element2) 
+chromedriver = os.path.dirname(os.path.realpath(__file__))+"/chromedriver"
+os.environ["webdriver.chrome.driver"] = chromedriver
+driver = webdriver.Chrome(chromedriver)
+for i in test_data:
+	driver.get("http://youtubeinmp3.com/fetch/?api=advanced&format=JSON&video=http://www.youtube.com/watch?v={}".format(i[32:]))
+	time.sleep(22.5)
+										
+driver.quit()
 
-driver.close()
